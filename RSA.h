@@ -14,8 +14,8 @@ typedef cpp_int ulli;
 ulli hcf(ulli a, ulli b);
 bool isPrime(ulli n);
 ulli modInverse(ulli a, ulli m);
-ulli Encrypt(ulli e, ulli n, ulli plainText);
-ulli Decrypt(ulli d, ulli n, ulli cipherText);
+std::vector<ulli> Encrypt(ulli e, ulli n, ulli plainText);
+ulli Decrypt(ulli d, ulli n, std::vector<ulli> cipherText);
 class Rsa
 {
 public:

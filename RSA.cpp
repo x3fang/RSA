@@ -222,13 +222,43 @@ bool Rsa::CalPQED()
                     return true;
     return false;
 }
-ulli Encrypt(ulli e, ulli n, ulli plainText)
+std::vector<ulli> Encrypt(ulli e, ulli n, ulli plainText)
 {
-    return quik_power(plainText, e, n);
+    std::vector<ulli> cipherText;
+    if (plainText > n)
+    {
+        ulli temp = -1;
+
+        std::string str = to_string(plainText);
+        for (auto i : str)
+        {
+            if ((temp * 10 + (i - '0')) <= n && temp > 0)
+            {
+                temp = temp * 10 + (i - '0');
+            }
+            else if (temp == -1)
+            {
+                temp = (i - '0');
+            }
+            else
+            {
+                cipherText.push_back(temp);
+                temp = (i - '0');
+            }
+        }
+        cipherText.push_back(temp);
+        for (auto &i : cipherText)
+            i = quik_power(i, e, n);
+        std::cout << cipherText.size() << std::endl;
+    }
+    return cipherText;
 }
-ulli Decrypt(ulli d, ulli n, ulli cipherText)
+ulli Decrypt(ulli d, ulli n, std::vector<ulli> cipherText)
 {
-    return quik_power(cipherText, d, n);
+    std::string str;
+    for (auto i : cipherText)
+        str += to_string(quik_power(i, d, n));
+    return ulli(str);
 }
 // Miller-Rabin 质数测试函数，参数为 n（待检测数）和 iterations（测试的迭代次数）
 bool millerRabin(ulli n, ulli iterations)
